@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <!-- Bootstrap CSS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" ></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+        <style>
+        .container{
+            max-width: 540px;
+        }
+        li.parsley-required, .parsley-minlength, .parsley-type, .parsley-equalto {
+            color: red;
+        }
+    </style>
+   
+</head>
+
+<body>
+    <div class="container mt-3">
+        <h1 class="text-center">Signup Form</h1>
+        <% if (locals.message) { %>
+            <div class="error">
+                <h4 class="alert alert-danger mt-4"> <%= message %>
+                    <% if (message === 'This email is already register') { %>
+                        <a class="btn btn-danger" href="/login" style="display: inline-flex;float: right;">ok</a>
+                    <% } else { %>
+                        <a class="btn btn-danger" href="/register" style="display: inline-flex;float: right;">ok</a>
+                    <% } %>
+                </h4>
+            </div><br>
+        <% } %>
+        
+    <form action="/v1/user/Signup" method="POST"  data-parsley-validate>
+        <div class="mb-3">
+            <label class="form-label">User Name</label>
+            <input type="text" class="form-control" name="user_name" placeholder="Enter user Name" required
+            data-parsley-required-message="Please enter first name"/>
+            <% if(locals.errors && locals.errors.user_name){%>
+                <div class="error">
+                    <%= errors.user_name[0]%>
+                </div><br>
+            <% }%>
+          </div>
+        <div class="mb-3">
+          <label class="form-label">Email address</label>
+          <input type="email" class="form-control" name="email" placeholder="Enter email address" required
+          data-parsley-required-message="Please enter email address"/>
+        <% if(locals.errors && locals.errors.email){%>
+            <div class="error">
+                <%= errors.email[0]%>
+            </div><br>
+        <% }%>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Enter password" id="pass1"
+          required
+          data-parsley-minlength="5"
+          data-parsley-minlength-message="It should have 5 characters or more"
+          data-parsley-required-message="Please enter password"/>
+          <% if(locals.errors && locals.errors.password){%>
+            <div class="error">
+                <%= errors.password[0]%>
+            </div><br>
+        <% }%>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" name="c_password" placeholder="Enter confirm password" 
+            required
+            data-parsley-equalto="#pass1"
+            data-parsley-required-message="Please enter confirm password"
+            data-parsley-equalto-message="Password and Confirm Password must be same"/>
+            <% if(locals.errors && locals.errors.c_password){%>
+              <div class="error">
+                  <%= errors.c_password[0]%>
+              </div><br>
+          <% }%>
+          </div>
+        <div class="mb-3 text-center">
+            <button type="submit" class="btn btn-primary w-50">Submit</button>
+        </div>
+        <p class='text-center'>Already have an account? <a href='/login'>Sign In</a></p>
+        
+      </form>
+    </div>
+</body>
+
+</html>
